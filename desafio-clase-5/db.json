@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "otra cosa",
+    "description": "sirve para cosas",
+    "price": 500,
+    "thumbnail": "otra ruta",
+    "code": 2,
+    "stock": 754
+  },
+  {
+    "id": 2,
+    "title": "algo",
+    "description": "es algo que sirve para algo",
+    "price": "$700",
+    "thumbnail": "ruta de imagen",
+    "code": 101,
+    "stock": 57
+  }
+]

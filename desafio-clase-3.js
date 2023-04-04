@@ -1,7 +1,12 @@
-class productManager {
-  static lastId = 0;
+class ProductManager {
+  lastId = 0;
 
   constructor() {
+  
+
+    const savedProducts = fs.readFile()
+
+
     this.products = [];
   }
 
@@ -23,22 +28,23 @@ class productManager {
     }
   }
 
-  validateCodeUniqueness() {
-    const codes = this.products.map((p) => p.code);
-    const duplicateCodes = codes.filter(
-      (code, index) => codes.indexOf(code) !== index
-    );
-    if (duplicateCodes.length > 0) {
-      console.log("Hay productos con códigos duplicados:", duplicateCodes);
-    } else {
-      console.log("Todos los códigos son únicos.");
+  getProductsByCode(code) {
+    let findProduct = null;
+    this.products.map((p) => {
+      if (p.code === code) {
+        findProduct = p;
+      }
+    });
+
+    if (findProduct) {
+      return findProduct;
     }
   }
 
   addProduct(title, description, price, thumbnail, code, stock) {
-    productManager.lastId = productManager.lastId + 1;
+    this.lastId = this.lastId + 1;
     const NewProduct = {
-      id: productManager.lastId,
+      id: this.lastId,
       title: title,
       description: description,
       price: price,
@@ -46,8 +52,9 @@ class productManager {
       code: code,
       stock: stock,
     };
+
     if (
-      productManager.lastId == undefined ||
+      this.lastId == undefined ||
       title == undefined ||
       description == undefined ||
       price == undefined ||
@@ -57,12 +64,18 @@ class productManager {
     ) {
       console.log("falta completar algun casillero");
     } else {
-      this.products.push(NewProduct);
+      const findProduct = this.getProductsByCode(code);
+      
+      if (findProduct) {
+        console.log('F')
+      } else {
+        this.products.push(NewProduct);
+      }
     }
   }
 }
 
-const product = new productManager();
+const product = new ProductManager();
 product.addProduct(
   "algo",
   "es algo que sirve para algo",
@@ -72,16 +85,24 @@ product.addProduct(
   57
 );
 product.addProduct(
-  "otra cosa",
-  "es algo que sirve para otra cosa",
-  "$972",
+  "algo",
+  "es algo que sirve para algo",
+  "$700",
   "ruta de imagen",
   101,
-  8
+  57
 );
-product.getProducts();
-//product.getProductsById(1);
-product.validateCodeUniqueness();
 
-const all = product.getProducts();
-console.log(all);
+product.addProduct(
+  "algo",
+  "es algo que sirve para algo",
+  "$700",
+  "ruta de imagen",
+  100,
+  57
+);
+
+console.log(product.getProducts())
+
+
+
