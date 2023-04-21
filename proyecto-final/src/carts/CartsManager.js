@@ -17,7 +17,27 @@ class CartsManager {
   }
 
   getCart() {
-    return this.carts.slice();
+    let cartsResponse = [];
+    this.carts.forEach((c) => {
+      let pIdQty = new Map();
+
+      c.products.forEach((p) => {
+        if (pIdQty.get(p) === undefined) {
+          pIdQty.set(p, 1);
+        } else {
+          pIdQty.set(p, pIdQty.get(p) + 1);
+        }
+      });
+
+      let productsResponse = [];
+      for (const entries of pIdQty) {
+        productsResponse.push(entries);
+      }
+
+      cartsResponse.push({ CId: c.CId, products: productsResponse });
+    });
+
+    return cartsResponse.slice();
   }
 
   getCartByCId(CId) {
