@@ -1,4 +1,1 @@
-[
-  { "CId": 0, "products": [3] },
-  { "CId": 1, "products": [1, 2, 3, 3] }
-]
+[{"CId":0,"products":[3]},{"CId":1,"products":[1,2,3,3,3]}]

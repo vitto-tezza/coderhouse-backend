@@ -56,19 +56,7 @@ class CartsManager {
   }
 
   async addProduct(CId, PId) {
-    let products = this.carts[CId].products;
-    products.get
-    //this.carts[CId].products.push(PId);
-
-    let productQtyMap = new Map();
-
-    for (let i = 0; i < products.length; i = i + 1) {
-      if (productQtyMap.get(products[i]) === undefined) {
-        productQtyMap.set(products[i], 1);
-      } else {
-        productQtyMap.set(products[i], productQtyMap.get(products[i]) + 1);
-      }
-    }
+    this.carts[CId].products.push(PId);
 
     await this.updateDB();
     console.log(`Producto agregado al ${CId}`);
