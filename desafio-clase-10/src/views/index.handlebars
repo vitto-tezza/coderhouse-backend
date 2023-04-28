@@ -1,0 +1,47 @@
+<div class="container-fluid">
+  <div class="row">
+    <header class="bg-success text-white p-3" style="height: 25vh;">
+      <h1><b>Desafio clase 10</b></h1>
+    </header>
+  </div>
+  <div class="row">
+    <ul>
+      {{#each products}}
+        <div class="card" style="width: 18rem;">
+          <img src={{thumbnail}} class="card-img-top" />
+          <div class="card-body">
+            <h5 class="card-title">{{title}}</h5>
+            <p class="card-text">{{description}}</p>
+            <p class="card-text">${{price}}</p>
+            <a href="#" class="btn btn-primary">agregar al carrito</a>
+          </div>
+        </div>
+      {{/each}}
+    </ul>
+  </div>
+  <div>
+    <h2>Agregar producto</h2>
+    <form id="form">
+      <label for="title">Título:</label>
+      <input type="text" id="title" name="title" required /><br /><br />
+      <label for="description">Descripción:</label>
+      <input type="text" id="description" name="description" required /><br
+      /><br />
+      <label for="price">Precio:</label>
+      <input type="number" id="price" name="price" required /><br /><br />
+      <label for="thumbnail">Imagen:</label>
+      <input type="text" id="thumbnail" name="thumbnail" required /><br /><br />
+      <label for="code">Código:</label>
+      <input type="text" id="code" name="code" />
+    </form>
+    <button>subir producto</button>
+  </div>
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"
+  ></script>
+  <script>
+    const socket = io('ws://localhost:8080'); socket.on('connect', () => {
+    socket.on('server_confirm', (data)=>{ console.log(data); }); })
+  </script>
+</div>

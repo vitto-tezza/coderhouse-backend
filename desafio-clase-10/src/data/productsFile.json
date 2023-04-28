@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "cosa",
+    "description": "sirve para otra cosas",
+    "price": 557,
+    "thumbnail": "../public/img/coderHouse.jpg",
+    "code": 3,
+    "stock": 800
+  },
+  {
+    "id": 2,
+    "title": "otra cosa",
+    "description": "sirve para mas cosas",
+    "price": 480,
+    "thumbnail": "../public/img/coderHouse.jpg",
+    "code": 2,
+    "stock": 754
+  }
+]
