@@ -14,8 +14,3 @@ server.use("/api", cartsRouter);
 server.listen(PUERTO, () => {
   console.log(`server iniciado en puerto ${PUERTO}`);
 });
-
-// URL api.com.ar/products
-// method
-// headers
-// body

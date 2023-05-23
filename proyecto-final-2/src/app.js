@@ -1,22 +1,26 @@
-import {} from "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
 import { engine } from "express-handlebars";
 
-import router from "./api/products/products.routes.js";
+//poner correctamente una vez creados
+import productsRouter from "./api/products/products.router.js";
+import cartsRouter from "./api/carts/carts.router.js";
+
 import { __dirname } from "./utils.js";
 
-const PORT = parseInt(process.env.PORT) || 3000;
-const MONGOOSE_URL = process.env.MONGOOSE_URL;
+const PORT = 8080;
+const MONGOOSE_URL = "mongodb://127.0.0.1:27017/coder51220";
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api", router);
+//poner correctamente una vez creados
+app.use("/api", productsRouter);
+app.use("/api", cartsRouter);
 
-app.use("/public", express.static(`${__dirname}/public`));
+//app.use("/public", express.static(`${__dirname}/public`));
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
@@ -29,5 +33,5 @@ try {
     console.log(`Servidor iniciado en puerto ${PORT}`);
   });
 } catch (err) {
-  console.log("No se puede conectar con el servidor de bbdd");
+  console.log(err.message);
 }
