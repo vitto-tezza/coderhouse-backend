@@ -1,6 +1,5 @@
 import express from "express";
 import { default as Carts } from "./carts.dbclass.js";
-import cartModel from "./cart.model.js";
 
 const dbclass = new Carts();
 const cartsRouter = express.Router();
@@ -17,7 +16,7 @@ cartsRouter.get("/cart", async (req, res) => {
 cartsRouter.get("/cart/:CId", async (req, res) => {
   try {
     const CId = req.params.CId;
-    const process = await cartModel.findById(CId);
+    const process = await dbclass.getCartByCId(CId);
     res.status(200).send({ status: "OK", data: process });
   } catch (err) {
     res.status(500).send({ status: "ERR", error: err });
@@ -32,11 +31,11 @@ cartsRouter.post("/cart", async (req, res) => {
       .send({ status: "OK", message: "Carrito creado exitosamente" });
   } catch (err) {
     res.status(500).send({ status: "ERR", error: err });
-    console.log(err)
+    console.log(err);
   }
 });
 
-cartsRouter.post("/cart/:CId/products", async (req, res) => {
+/* cartsRouter.post("/cart/:CId/products", async (req, res) => {
   const { PId } = req.body;
   const CId = req.params.CId;
   try {
@@ -45,6 +44,6 @@ cartsRouter.post("/cart/:CId/products", async (req, res) => {
   } catch (err) {
     res.status(500).send({ status: "ERR", error: err });
   }
-});
+}); */
 
 export default cartsRouter;

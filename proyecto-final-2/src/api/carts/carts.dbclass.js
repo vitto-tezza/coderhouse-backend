@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import cartModel from "./cart.model.js";
-import { ObjectId } from "mongoose";
+import Products from "../products/products.dbclass.js";
 
 class Carts {
   constructor() {}
@@ -65,10 +65,9 @@ class Carts {
 
   async addProduct(CId, PId) {
     try {
+      const product = await Products.getProductById(id);
       const cart = await cartModel.findById(CId);
-      const PId = mongoose.Types;
-      const productId = new ObjectId(PId);
-      cart.products.push(productId);
+      cart.products.push(PId);
       await cart.save();
       console.log(`Producto agregado al carrito ${CId}`);
     } catch (err) {
