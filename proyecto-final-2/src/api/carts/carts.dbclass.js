@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import cartModel from "./cart.model.js";
-import Products from "../products/products.dbclass.js";
+import { default as Products } from "../products/products.dbclass.js";
+import { ObjectId } from "mongoose";
+
+const dbProducts = new Products();
 
 class Carts {
   constructor() {}
@@ -64,14 +67,25 @@ class Carts {
   }
 
   async addProduct(CId, PId) {
-    try {
-      const product = await Products.getProductById(id);
+    const product = await dbProducts.getProductById(PId);
+    if (product) {
       const cart = await cartModel.findById(CId);
-      cart.products.push(PId);
+      cart.products.push({ productId: product._id });
       await cart.save();
       console.log(`Producto agregado al carrito ${CId}`);
-    } catch (err) {
-      console.log(err);
+    } else {
+      throw new Error("producto inexistente!");
+    }
+  }
+
+  async deleteProduct(CId, PId) {
+    const cart = await cartModel.findById(CId).exec();
+    if (cart) {
+      const product = { productId: PId };
+      const index = cart.products.findIndex((p) => p._id.toString() === PId);
+      if (index > -1) {
+        cart.products.splice(index, 1);
+      }
     }
   }
 }

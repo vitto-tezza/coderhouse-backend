@@ -8,7 +8,7 @@ const schema = new mongoose.Schema({
   cartId: Number,
   products: [
     {
-      productId: Number,
+      productId: String,
       quantity: Number,
     },
   ],

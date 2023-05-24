@@ -6,7 +6,7 @@ const cartsRouter = express.Router();
 
 cartsRouter.get("/cart", async (req, res) => {
   try {
-    const process = await cartModel.find();
+    const process = await dbclass.getCarts();
     res.status(200).send({ status: "OK", data: process });
   } catch (err) {
     res.status(500).send({ status: "ERR", error: err });
@@ -35,15 +35,25 @@ cartsRouter.post("/cart", async (req, res) => {
   }
 });
 
-/* cartsRouter.post("/cart/:CId/products", async (req, res) => {
+cartsRouter.post("/cart/:CId/products", async (req, res) => {
   const { PId } = req.body;
   const CId = req.params.CId;
   try {
     await dbclass.addProduct(CId, PId);
     res.status(200).send("Producto agregado al carrito");
   } catch (err) {
+    res.status(500).send({ status: "ERR", error: err.message });
+  }
+});
+
+cartsRouter.delete("/cart/:CId/products/:PId", async (req, res) => {
+  try {
+    const { CId, PId } = req.params;
+    const process = await dbclass.deleteProduct(CId, PId);
+    res.status(200).send({ status: "OK", data: process });
+  } catch (err) {
     res.status(500).send({ status: "ERR", error: err });
   }
-}); */
+});
 
 export default cartsRouter;
