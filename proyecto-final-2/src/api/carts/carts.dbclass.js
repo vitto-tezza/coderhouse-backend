@@ -81,10 +81,12 @@ class Carts {
   async deleteProduct(CId, PId) {
     const cart = await cartModel.findById(CId).exec();
     if (cart) {
-      const product = { productId: PId };
-      const index = cart.products.findIndex((p) => p._id.toString() === PId);
-      if (index > -1) {
-        cart.products.splice(index, 1);
+      const newProducts = cart.products.filter(
+        (p) => p.productId.toString() !== PId
+      );
+      if (newProducts) {
+        await cartModel.updateOne({_id:CId},{products:newProducts})
+        console.log(newProducts);
       }
     }
   }
