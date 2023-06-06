@@ -32,7 +32,7 @@ const mainRoutes = (store) => {
 
   router.post("/login", async (req, res) => {
     req.sessionStore.userValidated = false;
-    const { login_email, login_password } = req.body;
+    const { login_email, login_password } = req.body; // Desestructuramos el req.body
 
     const user = await userModel.findOne({ userName: login_email });
 
@@ -42,6 +42,7 @@ const mainRoutes = (store) => {
     } else if (!isValidPassword(user, login_password)) {
       req.sessionStore.errorMessage = "Clave incorrecta";
       res.redirect("http://localhost:3000");
+      // res.redirect('http://localhost:3000/ae');
     } else {
       req.sessionStore.userValidated = true;
       req.sessionStore.errorMessage = "";
@@ -50,6 +51,14 @@ const mainRoutes = (store) => {
       res.redirect("http://localhost:3000");
     }
 
+    /* if (login_email === 'idux.net@gmail.com' && login_password === 'abc123') {
+            req.sessionStore.userValidated = true;
+            req.sessionStore.errorMessage = '';
+            res.redirect('http://localhost:3000');
+        } else {
+            req.sessionStore.errorMessage = 'Usuario o clave no válidos';
+            res.redirect('http://localhost:3000/ae');
+        } */
   });
 
   router.get("/logout", async (req, res) => {
@@ -68,11 +77,13 @@ const mainRoutes = (store) => {
     res.render("registration_err", {});
   });
 
+  // Solo incluímos passport desde el archivo de estrategias y realizamos la llamada al middleware de autenticación
+  // En caso de existir ya el mail en bbdd, redireccionará a /regfail, sino permitirá continuar con /register
   router.post(
     "/register",
     passport.authenticate("authRegistration", { failureRedirect: "/regfail" }),
     async (req, res) => {
-      const { firstName, lastName, userName, password } = req.body;
+      const { firstName, lastName, userName, password } = req.body; // Desestructuramos los elementos del body
       if (!firstName || !lastName || !userName || !password)
         res.status(400).send("Faltan campos obligatorios en el body");
       const newUser = {
@@ -82,6 +93,7 @@ const mainRoutes = (store) => {
         password: createHash(password),
       };
 
+      // const process = userModel.create(newUser);
       res
         .status(200)
         .send({ message: "Todo ok para cargar el usuario", data: newUser });

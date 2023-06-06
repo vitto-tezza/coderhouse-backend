@@ -22,17 +22,22 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: { secure: true }
+    // cookie: { maxAge: 30 * 1000 }, // la sesión expira luego de 30 segundos de INACTIVIDAD
 }));
 
+// Auth (passport)
+// Solo incluímos passport desde el archivo de estrategias y lo inicializamos
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Routes
 app.use('/', mainRoutes(store));
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', `${__dirname}/views`);
 
+// Server
 try {
     await mongoose.connect(MONGOOSE_URL);
     app.listen(SERVER_PORT, () => {

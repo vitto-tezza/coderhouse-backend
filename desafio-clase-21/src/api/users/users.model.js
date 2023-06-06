@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-mongoose.pluralize(null);
+mongoose.pluralize(null); // Importante! para no tener problemas con Mongoose
 
 const collection = 'users';
 
