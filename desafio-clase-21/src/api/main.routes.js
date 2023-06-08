@@ -1,7 +1,9 @@
 import { Router } from "express";
 import userModel from "./users/users.model.js";
 import { createHash, isValidPassword } from "../utils.js";
-import passport from "../auth/passport.strategies.js";
+import initializePassport from "../auth/passport.strategies.js"
+
+initializePassport();
 
 const mainRoutes = (store) => {
   const router = Router();
@@ -29,6 +31,22 @@ const mainRoutes = (store) => {
   router.get("/register", async (req, res) => {
     res.render("registration", {});
   });
+
+  router.get(
+    "/github",
+    passport.authenticate("github", { scope: ["user:email"] }),
+    async (req, res) => {
+    }
+  );
+
+  router.get(
+    "/githubcallback",
+    passport.authenticate("github", { failureRedirect: "/login" }),
+    async (req, res) => {
+      req.session.user = req.user;
+      res.redirect("/");
+    }
+  );
 
   router.post("/login", async (req, res) => {
     req.sessionStore.userValidated = false;
@@ -77,8 +95,6 @@ const mainRoutes = (store) => {
     res.render("registration_err", {});
   });
 
-  // Solo incluímos passport desde el archivo de estrategias y realizamos la llamada al middleware de autenticación
-  // En caso de existir ya el mail en bbdd, redireccionará a /regfail, sino permitirá continuar con /register
   router.post(
     "/register",
     passport.authenticate("authRegistration", { failureRedirect: "/regfail" }),
