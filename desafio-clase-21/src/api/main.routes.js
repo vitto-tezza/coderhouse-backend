@@ -1,7 +1,8 @@
 import { Router } from "express";
 import userModel from "./users/users.model.js";
 import { createHash, isValidPassword } from "../utils.js";
-import initializePassport from "../auth/passport.strategies.js"
+import initializePassport from "../auth/passport.strategies.js";
+import passport from "passport";
 
 initializePassport();
 
@@ -11,7 +12,6 @@ const mainRoutes = (store) => {
   router.get("/", async (req, res) => {
     store.get(req.sessionID, async (err, data) => {
       if (err) console.log(`Error al recuperar datos de sesión (${err})`);
-
       if (data == null && req.sessionStore.userValidated) {
         if (req.sessionStore.userAdmin) {
           res.render("private_admin", {});
@@ -33,24 +33,25 @@ const mainRoutes = (store) => {
   });
 
   router.get(
-    "/github",
+    "/api/sessions/github",
     passport.authenticate("github", { scope: ["user:email"] }),
-    async (req, res) => {
-    }
+    async (req, res) => {}
   );
 
   router.get(
-    "/githubcallback",
+    "/api/sessions/githubcallback",
     passport.authenticate("github", { failureRedirect: "/login" }),
     async (req, res) => {
-      req.session.user = req.user;
+      console.log(req.user);
+      req.sessionStore.user = req.user;
+      req.sessionStore.userValidated = true;
       res.redirect("/");
     }
   );
 
   router.post("/login", async (req, res) => {
     req.sessionStore.userValidated = false;
-    const { login_email, login_password } = req.body; // Desestructuramos el req.body
+    const { login_email, login_password } = req.body;
 
     const user = await userModel.findOne({ userName: login_email });
 
@@ -60,7 +61,6 @@ const mainRoutes = (store) => {
     } else if (!isValidPassword(user, login_password)) {
       req.sessionStore.errorMessage = "Clave incorrecta";
       res.redirect("http://localhost:3000");
-      // res.redirect('http://localhost:3000/ae');
     } else {
       req.sessionStore.userValidated = true;
       req.sessionStore.errorMessage = "";
@@ -68,15 +68,6 @@ const mainRoutes = (store) => {
       req.sessionStore.lastName = user.lastName;
       res.redirect("http://localhost:3000");
     }
-
-    /* if (login_email === 'idux.net@gmail.com' && login_password === 'abc123') {
-            req.sessionStore.userValidated = true;
-            req.sessionStore.errorMessage = '';
-            res.redirect('http://localhost:3000');
-        } else {
-            req.sessionStore.errorMessage = 'Usuario o clave no válidos';
-            res.redirect('http://localhost:3000/ae');
-        } */
   });
 
   router.get("/logout", async (req, res) => {
@@ -99,7 +90,7 @@ const mainRoutes = (store) => {
     "/register",
     passport.authenticate("authRegistration", { failureRedirect: "/regfail" }),
     async (req, res) => {
-      const { firstName, lastName, userName, password } = req.body; // Desestructuramos los elementos del body
+      const { firstName, lastName, userName, password } = req.body;
       if (!firstName || !lastName || !userName || !password)
         res.status(400).send("Faltan campos obligatorios en el body");
       const newUser = {
@@ -108,8 +99,6 @@ const mainRoutes = (store) => {
         userName: userName,
         password: createHash(password),
       };
-
-      // const process = userModel.create(newUser);
       res
         .status(200)
         .send({ message: "Todo ok para cargar el usuario", data: newUser });

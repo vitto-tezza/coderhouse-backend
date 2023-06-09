@@ -31,7 +31,7 @@ const initializePassport = () => {
 
   const githubData = {
     clientID: "Iv1.7888f7676bf6feb7",
-    clientSecret: "e4a88f3c520d8f65ddc5fe22087240d8081a0b71",
+    clientSecret: "a02baf9580da7b75546aea15d535dcc4fa7c700a",
     callbackUrl: "http://localhost:3000/api/sessions/githubcallback",
   };
 
@@ -41,6 +41,7 @@ const initializePassport = () => {
         userName: profile._json.email,
       });
 
+      console.log(user);
       if (!user) {
         done(null, false);
       } else {

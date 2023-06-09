@@ -8,9 +8,11 @@ const mainRoutes = (store) => {
 
   router.get("/", async (req, res) => {
     store.get(req.sessionID, async (err, data) => {
+      console.log(data);
       if (err) console.log(`Error al recuperar datos de sesión (${err})`);
 
-      if (data == null && req.sessionStore.userValidated) {
+      console.log(data, req.sessionStore);
+      if (data == null && req.sessionStore.userValidated) {        
         if (req.sessionStore.userAdmin) {
           res.render("private_admin", {});
         } else {
@@ -49,7 +51,6 @@ const mainRoutes = (store) => {
       req.sessionStore.lastName = user.lastName;
       res.redirect("http://localhost:3000");
     }
-
   });
 
   router.get("/logout", async (req, res) => {
