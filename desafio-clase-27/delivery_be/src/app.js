@@ -1,18 +1,25 @@
 import cors from "cors";
 import express from "express";
-import config from "./config.js";
+import config from "./utils/config.js";
 import MongoSingleton from "./services/mongo_class.js";
-import { productRoutes } from "./routes/product_routes.js";
+import {userRoutes} from "./routes/user.routes.js";
+import {orderRoutes} from "./routes/order.routes.js";
+import {businessRoutes} from "./routes/business.routes.js";
+
 
 const app = express();
 app.use(express.json());
-app.use(cors({
-    origin:'*',
-    methods: 'get,put,post',
-    allowedHeaders:'Content-Type,Authorization',
-}));
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET,PUT,POST",
+    allowedHeaders: "Content-Type,Authorization",
+  })
+);
 app.use(express.urlencoded({ extended: true }));
-app.use("/", productRoutes());
+app.use("/api/users", userRoutes());
+app.use("/api/orders", orderRoutes());
+app.use("/api/business", businessRoutes());
 
 try {
   MongoSingleton.getInstance();
