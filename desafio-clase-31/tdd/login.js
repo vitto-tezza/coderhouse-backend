@@ -10,7 +10,7 @@ let test
 let passedTests = 0
 
 console.log('T1: No se ha proporcionado contraseña si pass está vacío.')
-if (login('cperren') === 'No se ha proporcionado contraseña') {
+if (login('vitto-tezza') === 'No se ha proporcionado contraseña') {
     passedTests++
     console.log('Passed')
 } else {
@@ -18,7 +18,7 @@ if (login('cperren') === 'No se ha proporcionado contraseña') {
 }
 
 console.log('T2: No se ha proporcionado usuario si user está vacío.')
-if (login('', 'abc123') === 'No se ha proporcionado usuario') {
+if (login('', '123456') === 'No se ha proporcionado usuario') {
     passedTests++
     console.log('Passed')
 } else {
@@ -34,7 +34,7 @@ if (login('coderUser', 'abc123') === 'Contraseña incorrecta') {
 }
 
 console.log('T4: Credenciales incorrectas si user es incorrecto.')
-if (login('cperren', '123') === 'Credenciales incorrectas') {
+if (login('vitto-tezza', '123456') === 'Credenciales incorrectas') {
     passedTests++
     console.log('Passed')
 } else {
