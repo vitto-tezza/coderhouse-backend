@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Lista de Productos</h1>
+  </header>
+  <main>
+    <ul id="productList">
+      <!-- Aquí se mostrará la lista de productos -->
+    </ul>
+  </main>
+  <footer>
+    <p>© 2023 Tu Empresa</p>
+  </footer>
+
+  <script>
+    const productList = document.getElementById("productList");
+
+    // Función para obtener y mostrar la lista de productos
+    async function displayProductList() {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/products/get");
+        const data = await response.json();
+
+        if (data.data && data.data.length > 0) {
+          const products = data.data;
+          let productListHTML = "";
+
+          products.forEach((product) => {
+            productListHTML += `
+              <li>
+                <h2>${product.brand} - ${product.model}</h2>
+                <p>Descripción: ${product.description}</p>
+                <p>Precio: $${product.price}</p>
+              </li>
+            `;
+          });
+
+          productList.innerHTML = productListHTML;
+        } else {
+          productList.innerHTML = "<li>No hay productos disponibles</li>";
+        }
+      } catch (error) {
+        console.error("Error obteniendo la lista de productos:", error);
+      }
+    }
+
+    // Llamar a la función para mostrar la lista de productos al cargar la página
+    displayProductList();
+  </script>
+</body>
+</html>
