@@ -27,6 +27,7 @@ class ContenedorSesiones {
   }
 
   async createUser(user) {
+    console.log(user);
     try {
       const isNotValidUser = await SessModel.findOne({ email: user.email });
 

@@ -38,20 +38,17 @@ passport.use(
       passwordField: "password",
       passReqToCallback: true,
     },
-    async (req, email, password, done) => {
+    async (req, email, password, name, adress, age, phone, done) => {
       try {
-        const { personName, adress, age, phone, avatar } = req.body;
-
         const user = await manejadorSesiones.createUser({
           email,
           password,
-          personName,
+          name,
           adress,
           age,
           phone,
-          avatar,
         });
-
+        console.log(user);
         if (user.err) return done(null, false);
 
         return done(null, user);

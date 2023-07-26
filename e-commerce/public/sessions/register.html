@@ -1,47 +1,125 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crear cuenta</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <main>
-        <h1>Crear cuenta para acceder</h1>
-        <form action="/register" method="post" id="register-form">
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" placeholder="mail@ejemplo.com" required>
+      <h1>Crear cuenta para acceder</h1>
+      <form id="register-form">
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="mail@ejemplo.com"
+          required
+        />
 
-            <label for="password">Contraseña</label>
-            <input type="password" name="password" id="password" placeholder="********" required>
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="********"
+          required
+        />
 
-            <label for="password2">Repetir contraseña</label>
-            <input type="password" name="password2" id="password2" placeholder="********" required>
+        <label for="personName">Nombre</label>
+        <input
+          type="text"
+          name="personName"
+          id="personName"
+          placeholder="Nombre"
+          required
+        />
 
-            <label for="personName">Nombre</label>
-            <input type="text" name="personName" id="personName" placeholder="Nombre" required>
+        <label for="adress">Dirección</label>
+        <input
+          type="text"
+          name="adress"
+          id="adress"
+          placeholder="Dirección"
+          required
+        />
 
-            <label for="adress">Dirección</label>
-            <input type="text" name="adress" id="adress" placeholder="Dirección" required>
+        <label for="age">Edad</label>
+        <input type="number" name="age" id="age" placeholder="Edad" required />
 
-            <label for="age">Edad</label>
-            <input type="number" name="age" id="age" placeholder="Edad" required>
+        <label for="phone">Teléfono</label>
+        <input
+          type="number"
+          name="phone"
+          id="phone"
+          placeholder="Teléfono"
+          required
+        />
 
-            <label for="phone">Teléfono</label>
-            <input type="number" name="phone" id="phone" placeholder="Teléfono" required>
-
-            <div class="btn__container">
-                <input class="btn active" type="submit" value="Crear">
-                <a class="btn" href="/">Loguearte</a>
-            </div>
-        </form>
+        <div class="btn__container">
+          <button class="btn active" type="submit">Ingresar</button>
+          <a class="btn" href="/">Loguearte</a>
+        </div>
+      </form>
     </main>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../js/register.js"></script>
-</body>
+    <script>
+      const registerForm = document.getElementById("register-form");
 
+      // Función para manejar el registro
+      async function handleRegister(event) {
+        event.preventDefault();
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+        const name = event.target.personName.value;
+        const adress = event.target.adress.value;
+        const age = event.target.age.value;
+        const phone = event.target.phone.value;
+
+        // Realizar la solicitud de registro al backend
+        try {
+          const response = await fetch(
+            "http://localhost:5000/sessions/register",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email,
+                password,
+                name,
+                adress,
+                age,
+                phone,
+              }),
+            }
+          );
+          // Check if the response is a redirect
+          if (response.redirected) {
+            // Redirect the user to the location specified in the "Location" header
+            window.location.href = response.url;
+          } else {
+            // If the response is not a redirect, it's expected to be JSON
+            const data = await response.json();
+
+            if (data.success) {
+              // If the login was successful, redirect to the products page
+              window.location.href = "/products/products.html";
+            } else {
+              // If the login failed, show an error message
+              alert("Error al iniciar sesión. Verifica tus credenciales.");
+            }
+          }
+        } catch (error) {
+          console.error("Error iniciando sesión:", error);
+        }
+      }
+
+      // Agregar el evento submit al formulario de registro
+      registerForm.addEventListener("submit", handleRegister);
+    </script>
+  </body>
 </html>

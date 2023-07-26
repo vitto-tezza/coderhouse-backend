@@ -29,7 +29,7 @@ routerSesions.post(
   "/register",
   passport.authenticate("singup", {
     successRedirect: "/", // Redirige a la página principal en caso de éxito
-    failureRedirect: "/pages/register-error.html",
+    failureRedirect: "/register-error",
     passReqToCallback: true,
   })
 );
