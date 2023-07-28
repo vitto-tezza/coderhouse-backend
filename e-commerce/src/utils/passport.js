@@ -13,18 +13,18 @@ passport.use(
       passwordField: "password",
       passReqToCallback: true,
     },
-    async (req, email, password, done) => {
+    async (req, email, password) => {
       try {
         const user = await manejadorSesiones.findUser(email);
 
-        if (!user) return done(null, false);
+        if (!user) return(null, false);
 
-        if (!isValidPassword(user, password)) return done(null, false);
+        if (!isValidPassword(user, password)) return(null, false);
 
-        return done(null, user);
+        return (null, user);
       } catch (err) {
         console.log(err);
-        return done(err);
+        return (err);
       }
     }
   )
@@ -38,7 +38,7 @@ passport.use(
       passwordField: "password",
       passReqToCallback: true,
     },
-    async (req, email, password, name, adress, age, phone, done) => {
+    async (req, email, password, name, adress, age, phone) => {
       try {
         const user = await manejadorSesiones.createUser({
           email,
@@ -49,25 +49,25 @@ passport.use(
           phone,
         });
         console.log(user);
-        if (user.err) return done(null, false);
+        if (user.err) return (null, false);
 
-        return done(null, user);
+        return (null, user);
       } catch (err) {
         console.log(err);
-        return done(err);
+        return (err);
       }
     }
   )
 );
 
 // Serialize
-passport.serializeUser((email, done) => {
-  done(null, email);
+passport.serializeUser((email) => {
+  (null, email);
 });
 
 // Deserialize
-passport.deserializeUser((email, done) => {
-  done(null, email);
+passport.deserializeUser((email) => {
+  (null, email);
 });
 
 export default passport;
