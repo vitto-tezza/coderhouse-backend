@@ -1,8 +1,8 @@
 "use strict";
 
-var User = require("../models/user");
+const User = require("../models/user");
 
-var userController = {
+const userController = {
   login: async (req, res) => {
     try {
       var params = req.body;
@@ -16,7 +16,6 @@ var userController = {
           .status(401)
           .send({ status: "error", message: "Credenciales inválidas" });
       }
-
 
       return res.status(200).send({ status: "success", user });
     } catch (error) {
@@ -96,7 +95,6 @@ var userController = {
       });
     }
   },
-
 };
 
 module.exports = userController;
