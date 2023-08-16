@@ -1,0 +1,22 @@
+<!-- views/cart.ejs -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cart</title>
+  </head>
+  <body>
+    <!-- cart.ejs -->
+
+    <h1>Cart</h1>
+    <% cartItems.forEach(product => { %>
+    <div>
+      <h3><%= product.name %></h3>
+      <p>Price: $<%= product.price %></p>
+      <form action="/cart/remove/<%= product._id %>" method="POST">
+        <button type="submit">Remove from Cart</button>
+      </form>
+    </div>
+    <% }); %>
+    <a href="/products">Back to Products</a>
+  </body>
+</html>
